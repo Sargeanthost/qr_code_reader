@@ -2,6 +2,9 @@ This is a simple qr code reader. It has a bounding box for each qr code it sees 
 
 Used libraries:
 [pyzbar](https://pypi.org/project/pyzbar/)
+
 [numpy](https://pypi.org/project/numpy/)
+
 [opencv-python](https://pypi.org/project/opencv-python/)
+
 [imutils](https://pypi.org/project/imutils/)
