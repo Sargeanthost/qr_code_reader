@@ -10,7 +10,7 @@ Look at my fork for pynotifier and copy the *pynotifier.py* file; place it into 
 C:\YOUR\PYTHON\INSTILLATION\LOCATION\python\lib\site-packages\pynotifier\
 ```
 
-For win10Toast, copy *__init__* and *__main__*  from the fork, but instead go to:
+For win10Toast, copy *__init__* from the fork, but instead go to:
 
 ```path
 C:\YOUR\PYTHON\INSTILLATION\LOCATION\python\lib\site-packages\win10toast\
