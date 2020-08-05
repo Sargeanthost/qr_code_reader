@@ -4,10 +4,15 @@ This is a simple qr code reader. It has a bounding box for each qr code it sees 
 
 ## **You will need to modify the pynotifier and win10toast libraries in order to maintain usability of the actionable toast in the *notification* branch.**
 
-Look at my fork for pynotifier, and place it into a folder named **pynotifier** in the location:
+Look at my fork for pynotifier and copy the *pynotifier.py* file; place it into the folder named **pynotifier** in the location:
 
 ```path
 C:\YOUR\PYTHON\INSTILLATION\LOCATION\python\lib\site-packages\pynotifier\
 ```
 
-For win10Toast, repeat the process, but create a folder named **win10toast** instead.
+For win10Toast, copy the *\__init__* file from the fork, but instead go to:
+
+```path
+C:\YOUR\PYTHON\INSTILLATION\LOCATION\python\lib\site-packages\win10toast\
+```
+
