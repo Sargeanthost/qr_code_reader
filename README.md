@@ -15,4 +15,3 @@ For win10Toast, copy the *\__init__* file from the fork, but instead go to:
 ```path
 C:\YOUR\PYTHON\INSTILLATION\LOCATION\python\lib\site-packages\win10toast\
 ```
-
