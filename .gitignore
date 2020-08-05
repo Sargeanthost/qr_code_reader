@@ -1,4 +1,4 @@
-# ignore files in folder foo
-foo/*
+# ignore files in folder 
+icons/*
 # but keep the folder
-!foo/.keep
+!icons/.keep
