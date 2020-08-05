@@ -1,11 +1,13 @@
-This is a simple qr code reader. It has a bounding box for each qr code it sees and slightly scales text based on how close or far away the qr code is. This script uses the pythondocsgenerator extension; if you run into any errors delete the docstrings.
+# Simple QR code reader for webcam on Windows
 
-Used libraries:
+This is a simple qr code reader. It has a bounding box for each qr code it sees and slightly scales text based on how close or far away the qr code is.
 
-[pyzbar](https://pypi.org/project/pyzbar/)
+## **You will need to modify the pynotifier and win10toast libraries in order to maintain usability of the actionable toast in the *notification* branch.**
 
-[numpy](https://pypi.org/project/numpy/)
+Look at my fork for pynotifier, and place it into a folder named **pynotifier** in the location:
 
-[opencv-python](https://pypi.org/project/opencv-python/)
+```path
+C:\YOUR\PYTHON\INSTILLATION\LOCATION\python\lib\site-packages\pynotifier\
+```
 
-[imutils](https://pypi.org/project/imutils/)
+For win10Toast, repeat the process, but create a folder named **win10toast** instead.
