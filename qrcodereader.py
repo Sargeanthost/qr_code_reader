@@ -16,9 +16,8 @@ toast = ToastNotifier()
 font = cv2.FONT_HERSHEY_SIMPLEX
 windowName = 'Qr Reader'
 iconFolder = Path.joinpath(Path(__file__).resolve().parent, 'icons')
-
 links = []
-print(iconFolder)
+
 def scaledNumber(newMin, newMax, minimum, maximum, toScale):
     """Scales toMap between newMin and newMax while inversing the direction of the scale
 
@@ -57,7 +56,6 @@ while True:
 
                 strippedMessage = re.sub('[/\\:*?\'\"<>|.]', '', message) + 'favicon.ico' 
                 with open(Path.joinpath(iconFolder, strippedMessage), 'wb') as f:
-                    print(Path.joinpath(iconFolder, strippedMessage))
                     f.write(requests.get(message + '/favicon.ico').content)  
                 
                 pyn(
