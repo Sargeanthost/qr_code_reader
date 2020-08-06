@@ -1,4 +1,3 @@
-#https://www.youtube.com/watch?v=-4MPtERPq2E
 import cv2
 import numpy as np
 import imutils 
@@ -10,16 +9,16 @@ import requests
 from pathlib import Path
 import re
 import webbrowser
-# import time
 import os
 
 cap = cv2.VideoCapture(0)
 toast = ToastNotifier()
 font = cv2.FONT_HERSHEY_SIMPLEX
 windowName = 'Qr Reader'
-iconFolder = './qr_code_reader/icons/'
-links = []
+iconFolder = Path.joinpath(Path(__file__).resolve().parent, 'icons')
 
+links = []
+print(iconFolder)
 def scaledNumber(newMin, newMax, minimum, maximum, toScale):
     """Scales toMap between newMin and newMax while inversing the direction of the scale
 
@@ -57,13 +56,14 @@ while True:
                 links.append(message)
 
                 strippedMessage = re.sub('[/\\:*?\'\"<>|.]', '', message) + 'favicon.ico' 
-                with open(iconFolder+ strippedMessage, 'wb') as f:
+                with open(Path.joinpath(iconFolder, strippedMessage), 'wb') as f:
+                    print(Path.joinpath(iconFolder, strippedMessage))
                     f.write(requests.get(message + '/favicon.ico').content)  
                 
                 pyn(
                     title='QR Code Link',
                     description=message,
-                    icon_path=iconFolder+strippedMessage, # On Windows .ico is required, on Linux - .png
+                    icon_path=str(Path.joinpath(iconFolder,strippedMessage)), # On Windows .ico is required, on Linux - .png
                     duration=10,                              # Duration in seconds
                     urgency=pyn.URGENCY_CRITICAL,
                     callback_on_click=lambda: webbrowser.open(message, new=0, autoraise=True)
@@ -91,13 +91,13 @@ while True:
         break
 
 #delete downloaded favicons, may change how favicons are handled later
-for files in os.listdir(iconFolder):
+for files in os.listdir(str(iconFolder)):
     if files.endswith(".ico") or files.endswith(".png"):
-        if os.path.isfile(iconFolder+files) :
-            os.remove(iconFolder+files)
+        if os.path.isfile(str(Path.joinpath(iconFolder,files))) :
+            os.remove(str(Path.joinpath(iconFolder,files)))
         else:
             #unnecessary?
-            raise ValueError("{} is not a file.".format(iconFolder+files))
+            raise ValueError("{} is not a file.".format(str(Path.joinpath(iconFolder,files))))
     else:
         continue
 cv2.destroyAllWindows()
