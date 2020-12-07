@@ -19,7 +19,7 @@ iconFolder = Path.joinpath(Path(__file__).resolve().parent, 'icons')
 links = []
 
 def scaledNumber(newMin, newMax, minimum, maximum, toScale):
-    """Scales toMap between newMin and newMax while inversing the direction of the scale
+    """Inversely scale toMap to between newMin and newMax
 
     Args:
         newMin (float): New lower boundary
@@ -41,7 +41,7 @@ def scaledNumber(newMin, newMax, minimum, maximum, toScale):
 
 
 while True:
-    success, frame = cap.read()
+    _, frame = cap.read()
     frame = imutils.resize(frame,width=960,height=1080) 
 
     qrCodes = pyzbar.decode(frame)
@@ -50,7 +50,7 @@ while True:
         message = qrCode.data.decode('utf-8')
 
         #makes notification if it detects a link
-        if 'http' in message or 'www' in message:   
+        if 'http://' in message:   
             if message not in links:
                 links.append(message)
 
@@ -62,7 +62,7 @@ while True:
                     title='QR Code Link',
                     description=message,
                     icon_path=str(Path.joinpath(iconFolder,strippedMessage)), # On Windows .ico is required, on Linux - .png
-                    duration=10,                              # Duration in seconds
+                    duration=10,
                     urgency=pyn.URGENCY_CRITICAL,
                     callback_on_click=lambda: webbrowser.open(message, new=0, autoraise=True)
                 ).send()
@@ -79,7 +79,6 @@ while True:
         fontScale = scaledNumber(.8,1,4000,220000,area)
 
         cv2.putText(frame, message, (cornersFlat[0], cornersFlat[1]-20), font, fontScale,(255, 240, 240), 3)      
-        # cv2.putText(frame, str(area), (cornersFlat[0]+70, cornersFlat[1]+50), font, .9,(100, 100, 255), 2)
     
     cv2.imshow(windowName, frame)
     keyCode = cv2.waitKey(1)
@@ -88,14 +87,10 @@ while True:
     if cv2.getWindowProperty(windowName, cv2.WND_PROP_VISIBLE) <1 or keyCode ==27 :
         break
 
-#delete downloaded favicons, may change how favicons are handled later
+#delete downloaded favicons
 for files in os.listdir(str(iconFolder)):
     if files.endswith(".ico") or files.endswith(".png"):
-        if os.path.isfile(str(Path.joinpath(iconFolder,files))) :
-            os.remove(str(Path.joinpath(iconFolder,files)))
-        else:
-            #unnecessary?
-            raise ValueError("{} is not a file.".format(str(Path.joinpath(iconFolder,files))))
+        os.remove(str(Path.joinpath(iconFolder,files)))
     else:
         continue
 cv2.destroyAllWindows()
