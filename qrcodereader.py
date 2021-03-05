@@ -1,15 +1,14 @@
 import cv2
-import numpy as np
-import imutils
+from numpy import array, int32
+from imutils import resize
 import pyzbar.pyzbar as pyzbar
-import math
 from win10toast import ToastNotifier
 from pynotifier import Notification as pyn
-import requests
+from requests import get
 from pathlib import Path
-import re
-import webbrowser
-import os
+from re import sub
+from webbrowser import open as open_
+from os import remove, listdir
 
 cap = cv2.VideoCapture(0)
 toast = ToastNotifier()
@@ -44,7 +43,7 @@ def scaledNumber(newMin, newMax, minimum, maximum, toScale):
 
 while True:
     _, frame = cap.read()
-    frame = imutils.resize(frame, width=960, height=1080)
+    frame = resize(frame, width=960, height=1080)
 
     qrCodes = pyzbar.decode(frame)
 
@@ -57,11 +56,11 @@ while True:
                 links.append(message)
 
                 # On Windows .ico is required, on Linux - .png
-                strippedMessage = re.sub("[/\\:*?'\"<>|.]", "",
+                strippedMessage = sub("[/\\:*?'\"<>|.]", "",
                                          message) + "favicon.ico"
                 with open(Path.joinpath(iconFolder, strippedMessage),
                           "wb") as f:
-                    f.write(requests.get(message + "/favicon.ico").content)
+                    f.write(get(message + "/favicon.ico").content)
 
                 pyn(
                     title="QR Code Link",
@@ -71,11 +70,11 @@ while True:
                     ),  # On Windows .ico is required, on Linux - .png
                     duration=10,
                     urgency=pyn.URGENCY_CRITICAL,
-                    callback_on_click=lambda: webbrowser.open(
+                    callback_on_click=lambda: open_(
                         message, new=0, autoraise=True),
                 ).send()
 
-        corners = np.array(qrCode.polygon, np.int32)
+        corners = array(qrCode.polygon, int32)
         corners = corners.reshape((-1, 1, 2))
         cv2.polylines(frame, [corners], True, (255, 0, 100), 3)
 
@@ -105,9 +104,9 @@ while True:
         break
 
 #delete downloaded favicons on close
-for files in os.listdir(str(iconFolder)):
+for files in listdir(str(iconFolder)):
     if files.endswith(".ico") or files.endswith(".png"):
-        os.remove(str(Path.joinpath(iconFolder, files)))
+        remove(str(Path.joinpath(iconFolder, files)))
     else:
         continue
 
