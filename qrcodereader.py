@@ -1,4 +1,5 @@
-import cv2
+from cv2 import VideoCapture, FONT_HERSHEY_SIMPLEX, polylines, putText, imshow, waitKey, destroyAllWindows, \
+WND_PROP_VISIBLE, getWindowProperty
 from numpy import array, int32
 from imutils import resize
 import pyzbar.pyzbar as pyzbar
@@ -10,9 +11,9 @@ from re import sub
 from webbrowser import open as open_
 from os import remove, listdir
 
-cap = cv2.VideoCapture(0)
+cap = VideoCapture(0)
 toast = ToastNotifier()
-font = cv2.FONT_HERSHEY_SIMPLEX
+font = FONT_HERSHEY_SIMPLEX
 windowName = "Qr Reader"
 iconFolder = Path.joinpath(Path(__file__).resolve().parent, "icons")
 links = []
@@ -57,7 +58,7 @@ while True:
 
                 # On Windows .ico is required, on Linux - .png
                 strippedMessage = sub("[/\\:*?'\"<>|.]", "",
-                                         message) + "favicon.ico"
+                                      message) + "favicon.ico"
                 with open(Path.joinpath(iconFolder, strippedMessage),
                           "wb") as f:
                     f.write(get(message + "/favicon.ico").content)
@@ -76,14 +77,14 @@ while True:
 
         corners = array(qrCode.polygon, int32)
         corners = corners.reshape((-1, 1, 2))
-        cv2.polylines(frame, [corners], True, (255, 0, 100), 3)
+        polylines(frame, [corners], True, (255, 0, 100), 3)
 
         cornersFlat = qrCode.rect
 
         area = str(int(cornersFlat[2]) * int(cornersFlat[3]))
         fontScale = scaledNumber(0.8, 1, 4000, 220000, area)
 
-        cv2.putText(
+        putText(
             frame,
             message,
             (cornersFlat[0], cornersFlat[1] - 20),
@@ -93,14 +94,14 @@ while True:
             3,
         )
 
-        cv2.putText(frame, message, (cornersFlat[0], cornersFlat[1] - 20), font,
+        putText(frame, message, (cornersFlat[0], cornersFlat[1] - 20), font,
                     fontScale, (255, 240, 240), 3)
 
-    cv2.imshow(windowName, frame)
-    keyCode = cv2.waitKey(1)
+    imshow(windowName, frame)
+    keyCode = waitKey(1)
 
-    if cv2.getWindowProperty(windowName,
-                             cv2.WND_PROP_VISIBLE) < 1 or keyCode == 27:
+    if getWindowProperty(windowName,
+                            WND_PROP_VISIBLE) < 1 or keyCode == 27:
         break
 
 #delete downloaded favicons on close
@@ -110,4 +111,4 @@ for files in listdir(str(iconFolder)):
     else:
         continue
 
-cv2.destroyAllWindows()
+destroyAllWindows()
